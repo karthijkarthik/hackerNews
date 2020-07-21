@@ -18,7 +18,8 @@ let initialState = {
   isLoaded: false,
   pageNumber: 0,
   totalPageNumber: 0,
-  newsItems: []
+  newsItems: [],
+  hiddenNewsId: []
 }
 
 // server rendered home page

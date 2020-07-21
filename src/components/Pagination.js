@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { updatePageNumber } from '../actions/actionCreators';
+import { updateState } from '../actions/actionCreators';
+import { UPDATE_PAGENUMBER } from '../actions/actionTypes';
 
 export const Pagination = ({
     pageNumber,
@@ -11,9 +12,8 @@ export const Pagination = ({
 }) => {
     return(
         <>
-            {console.log(pageNumber, totalPage)}
-            {pageNumber !== 0 && <span onClick={() => dispatchUpdatePageNumber(pageNumber - 1)}>Previous</span>}
-            {pageNumber < totalPage && <span onClick={() => dispatchUpdatePageNumber(pageNumber + 1)}>Next</span>}
+            {pageNumber !== 0 && <span onClick={() => dispatchUpdatePageNumber(UPDATE_PAGENUMBER, pageNumber - 1)}>Previous</span>}
+            {pageNumber < totalPage && <span onClick={() => dispatchUpdatePageNumber(UPDATE_PAGENUMBER, pageNumber + 1)}>Next</span>}
         </>
     );
 };
@@ -30,7 +30,7 @@ export const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    dispatchUpdatePageNumber: updatePageNumber
+    dispatchUpdatePageNumber: updateState
 };
 
 export default connect(

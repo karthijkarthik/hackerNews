@@ -1,14 +1,9 @@
 import fetch from 'unfetch';
 
-import { TOGGLE_LOADING, RECEIVED_NEWSDATA, UPDATE_PAGENUMBER } from './actionTypes';
+import { TOGGLE_LOADING, RECEIVED_NEWSDATA, UPDATE_PAGENUMBER, UPDATE_HIDDEN_NEWSID } from './actionTypes';
 
-const toggleLoading = value => ({
-  type: TOGGLE_LOADING,
-  value
-});
-
-export const updatePageNumber = value => ({
-  type: UPDATE_PAGENUMBER,
+export const updateState = (type, value) => ({
+  type,
   value
 });
 
@@ -20,12 +15,27 @@ const loadNewsData = result => ({
 
 export const fetchNewsData = () => (dispatch, getState) => {
   const { pageNumber } = getState();
-  dispatch(toggleLoading(true));
+  dispatch(updateState(TOGGLE_LOADING, true));
   
   return fetch(`https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&page=${pageNumber}`)
     .then(res => res.json())
     .then((result) => {
-      dispatch(updatePageNumber(result.page));
+      dispatch(updateState(UPDATE_PAGENUMBER, result.page));
       dispatch(loadNewsData(result));
     })
+}
+
+export const hideNews = (id) => (dispatch, getState) => {
+  const hiddenIds = JSON.parse(localStorage.getItem('hiddenNewsid'));
+  if(!hiddenIds.includes(id)) {
+    hiddenIds.push(id);
+    localStorage.setItem('hiddenNewsid',  JSON.stringify(hiddenIds));
+  }
+
+  const { hiddenNewsId } = getState();
+  console.log('hiddenInAction', hiddenNewsId);
+  if(!hiddenNewsId.includes(id)) {
+    hiddenNewsId.push(id);
+    dispatch(updateState(UPDATE_HIDDEN_NEWSID, hiddenNewsId))
+  }
 }

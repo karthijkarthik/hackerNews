@@ -1,11 +1,12 @@
-import { TOGGLE_LOADING, RECEIVED_NEWSDATA, UPDATE_PAGENUMBER } from '../actions/actionTypes';
+import { TOGGLE_LOADING, RECEIVED_NEWSDATA, UPDATE_PAGENUMBER, UPDATE_HIDDEN_NEWSID } from '../actions/actionTypes';
 
 export const initialState = {
   error: null,
   isLoaded: false,
   pageNumber: 0,
   totalPageNumber: 0,
-  newsItems: []
+  newsItems: [],
+  hiddenNewsId: []
 };
 
 export const hackerNewsReducer = ( state = initialState, action) => {
@@ -29,6 +30,12 @@ export const hackerNewsReducer = ( state = initialState, action) => {
         ...state,
         pageNumber: action.value
       };
+
+    case UPDATE_HIDDEN_NEWSID:
+      return {
+        ...state,
+        hiddenNewsId: action.value
+      }
 
     default:
       return state
